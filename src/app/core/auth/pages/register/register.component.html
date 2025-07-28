@@ -1,0 +1,49 @@
+<section class="surface-overlay px-4 lg:px-6 py-4 surface-border">
+  <div class="border-bottom-1 surface-border">
+    <h2 class="mt-0 mb-2 text-900 font-bold text-4xl">Registrarse</h2>
+    <p class="mt-0 mb-5 text-700 font-normal text-base">
+      Si ya tienes una cuenta puedes ingresar desde
+      <a
+        class="text-indigo-600 hover:cursor-pointer hover:underline"
+        [routerLink]="['/auth/login']"
+        >aqui</a
+      >
+    </p>
+  </div>
+  <form [formGroup]="registerForm" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2 max-w-[700px]">
+      <label for="username">Username</label>
+      <input id="username" type="text" formControlName="username" pInputText />
+    </div>
+
+    <div class="flex flex-col gap-2 max-w-[700px]">
+      <label for="password">Contraseña</label>
+      <p-password
+        inputId="password"
+        [fluid]="true"
+        formControlName="password"
+        [toggleMask]="true"
+        [feedback]="false"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2 max-w-[700px]">
+      <label for="repeatPassword">Repetir contraseña</label>
+      <p-password
+        inputId="repeatPassword"
+        [fluid]="true"
+        formControlName="repeatPassword"
+        [toggleMask]="true"
+        [feedback]="false"
+      />
+    </div>
+    @if (errorMessage()) {
+      <div class="flex flex-col gap-2 max-w-[700px]">
+        <p-message severity="error">{{ errorMessage() }}</p-message>
+      </div>
+    }
+    <div class="flex flex-col gap-2 max-w-[700px]">
+      <p-button label="Entrar" (onClick)="register()" />
+    </div>
+  </form>
+</section>
