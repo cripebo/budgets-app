@@ -4,6 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "budgets-app": {
+      "i18n": { "sourceLocale": "es" },
       "projectType": "application",
       "schematics": {},
       "root": "",
