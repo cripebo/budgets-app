@@ -6,10 +6,10 @@ import { MenubarComponent } from '../../shared/components/menubar/menubar.compon
   selector: 'app-main-layout',
   imports: [RouterOutlet, MenubarComponent],
   template: `
-    <div class="py-4 px-8 "><app-menubar /></div>
-    <div class="container">
+    <div class="lg:pt-8 lg:px-8"><app-menubar /></div>
+    <main class="lg:pt-2 lg:px-8">
       <router-outlet />
-    </div>
+    </main>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

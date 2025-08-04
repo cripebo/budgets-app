@@ -1,3 +1,15 @@
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
 @import "primeicons/primeicons.css";
+
+html {
+  @apply text-gray-800;
+}
+
+.box-container {
+  @apply p-6 lg:rounded-md bg-white shadow-xs;
+}
+
+.box-container-2 {
+  @apply lg:my-2 lg:mx-4 p-6 lg:rounded-md bg-white shadow-xs;
+}
