@@ -1,24 +1,29 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TokenService {
-  private readonly tokenKey = 'token';
+  private readonly TOKEN_KEY = 'token';
+  private _token = signal<string | null>(localStorage.getItem(this.TOKEN_KEY));
+
+  hasToken = computed(() => !!this._token());
 
   setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+    localStorage.setItem(this.TOKEN_KEY, token);
+    this._token.set(token);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return this._token();
   }
 
-  clearToken(): void {
-    localStorage.removeItem(this.tokenKey);
+  removeToken(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+    this._token.set(null);
   }
 
-  hasToken(): boolean {
-    return !!this.getToken();
+  isLoggedIn(): boolean {
+    return !!this._token();
   }
 }

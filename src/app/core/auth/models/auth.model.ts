@@ -9,7 +9,8 @@ export interface UserCredentials {
 }
 
 export interface LoginResponse {
-  token: string;
+  success: boolean;
+  data: string;
 }
 
 export interface RegisterRequest {
