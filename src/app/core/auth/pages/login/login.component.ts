@@ -73,9 +73,8 @@ export class LoginComponent {
           return throwError(() => error);
         }),
       )
-      .subscribe((response) => {
-        this.tokenService.setToken(response.token);
-        this.router.navigate(['/dashboard']);
+      .subscribe(() => {
+        this.router.navigate(['/home']);
       });
   }
 
