@@ -1,9 +1,15 @@
 import { Ripple } from 'primeng/ripple';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 
 import { MenubarModule } from 'primeng/menubar';
+import { AuthService } from '@core/auth/services/auth.service';
 
 @Component({
   selector: 'app-menubar',
@@ -11,7 +17,12 @@ import { MenubarModule } from 'primeng/menubar';
   template: `
     <p-menubar [model]="items" styleClass="shadow-2xs">
       <ng-template pTemplate="end">
-        <div class="p-menubar-item" role="menuitem" style="cursor: pointer;">
+        <div
+          class="p-menubar-item"
+          role="menuitem"
+          style="cursor: pointer;"
+          (click)="authServive.logout()"
+        >
           <div class="p-menubar-item-content">
             <a pRipple class="p-ripple p-menubar-item-link">
               <span class="p-menubar-item-icon pi pi-sign-out"></span>
@@ -25,6 +36,7 @@ import { MenubarModule } from 'primeng/menubar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenubarComponent implements OnInit {
+  authServive = inject(AuthService);
   items: MenuItem[] | undefined;
 
   ngOnInit() {
@@ -32,7 +44,7 @@ export class MenubarComponent implements OnInit {
       {
         label: 'Inicio',
         icon: 'pi pi-home',
-        routerLink: '',
+        routerLink: 'home',
       },
       {
         label: 'Presupuestos',
