@@ -54,7 +54,7 @@ export class MenubarComponent implements OnInit {
       {
         label: 'Conceptos',
         icon: 'pi pi-bookmark',
-        routerLink: '',
+        routerLink: 'items',
       },
       {
         label: 'Estados',
