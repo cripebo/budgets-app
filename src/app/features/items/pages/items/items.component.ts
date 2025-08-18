@@ -8,14 +8,11 @@ import { ItemsTableComponent } from '@features/items/components/items-table/item
 import { ItemsActionsComponent } from '@features/items/components/items-actions/items-actions.component';
 import { ItemsService } from '@features/items/items.service';
 import { ItemsState } from '@features/items/items.state';
-import {
-  DialogService,
-  DynamicDialogConfig,
-  DynamicDialogRef,
-} from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 import { ItemFormComponent } from '../item-form/item-form.component';
 import { DeleteItemFormComponent } from '../delete-item-form/delete-item-form.component';
 import { Item } from '@features/items/models/items.model';
+import { ModalHandler } from '@shared/modals/modal-handler';
 
 @Component({
   selector: 'app-items',
@@ -46,83 +43,52 @@ import { Item } from '@features/items/models/items.model';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ItemsComponent implements OnInit {
-  private dialogService = inject(DialogService);
-  private dialogRef: DynamicDialogRef | undefined;
-  private dialogConf: DynamicDialogConfig = {
-    width: '50vw',
-    breakpoints: {
-      '1024px': '75vw',
-      '640px': '80vw',
-      '380px': '100%',
-    },
-    modal: true,
-    closable: true,
-  };
-
+export class ItemsComponent extends ModalHandler implements OnInit {
   private itemsService = inject(ItemsService);
   private itemsState = inject(ItemsState);
   protected items = this.itemsState.items;
   protected loading = this.itemsState.loading;
+
+  constructor(dialogService: DialogService) {
+    super(dialogService);
+  }
 
   ngOnInit(): void {
     this.itemsService.loadAll();
   }
 
   createItemModal() {
-    const header = 'Crear concepto';
-
-    this.dialogRef = this.dialogService.open(ItemFormComponent, {
-      header,
-      ...this.dialogConf,
-    });
-
-    this.dialogRef.onClose.subscribe((result: Item) => {
-      if (!result) return;
-
-      this.itemsService.createItem(result);
+    this.openModal(ItemFormComponent, {
+      header: 'Crear concepto',
+      onClose: (result: Item) => {
+        if (result) this.itemsService.createItem(result);
+      },
     });
   }
 
   editItemModal(itemId: number) {
-    const header = 'Editar concepto';
     const item = this.itemsState.getById(itemId);
 
-    this.dialogRef = this.dialogService.open(ItemFormComponent, {
-      header,
+    this.openModal(ItemFormComponent, {
+      header: 'Editar concepto',
       inputValues: { item },
-      ...this.dialogConf,
-    });
-
-    this.dialogRef.onClose.subscribe((result: Item) => {
-      if (!result) return;
-
-      this.itemsService.updateItem(result);
+      onClose: (result: Item) => {
+        if (result) this.itemsService.updateItem(result);
+      },
     });
   }
 
   deleteItemModal(itemId: number) {
-    const header = 'Eliminar concepto';
     const item = this.itemsState.getById(itemId);
-    const customDialogConf = {
-      width: '30vw',
-      breakpoints: {
-        '1024px': '60vw',
-        '380px': '100%',
-      },
-    };
 
-    this.dialogRef = this.dialogService.open(DeleteItemFormComponent, {
-      header,
+    this.openModal(DeleteItemFormComponent, {
+      header: 'Eliminar concepto',
       inputValues: { item },
-      ...this.dialogConf,
-      ...customDialogConf,
-    });
+      width: '30vw',
 
-    this.dialogRef.onClose.subscribe((result: Item) => {
-      if (!result) return;
-
-      this.itemsService.deleteItem(result.id!);
+      onClose: (result: Item) => {
+        if (result) this.itemsService.deleteItem(result.id!);
+      },
     });
   }
 }

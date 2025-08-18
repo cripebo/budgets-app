@@ -8,15 +8,11 @@ import { ClientsService } from '@features/clients/clients.service';
 import { ClientsState } from '@features/clients/clients.state';
 import { ClientsTableComponent } from '@features/clients/components/clients-table/clients-table.component';
 import { ClientsActionsComponent } from '@features/clients/components/clients-actions/clients-actions.component';
-import {
-  DialogService,
-  DynamicDialogRef,
-  DynamicDialogConfig,
-} from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 import { Client } from '@features/clients/models/clients.model';
 import { ClientFormComponent } from '../client-form/client-form.component';
 import { DeleteClientFormComponent } from '../delete-client-form/delete-client-form.component';
-import { take } from 'rxjs';
+import { ModalHandler } from '@shared/modals/modal-handler';
 
 @Component({
   selector: 'app-clients',
@@ -48,83 +44,51 @@ import { take } from 'rxjs';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientsComponent implements OnInit {
-  private dialogService = inject(DialogService);
-  private dialogRef: DynamicDialogRef | undefined;
-  private dialogConf: DynamicDialogConfig = {
-    width: '50vw',
-    breakpoints: {
-      '1024px': '75vw',
-      '640px': '80vw',
-      '380px': '100%',
-    },
-    modal: true,
-    closable: true,
-  };
-
+export class ClientsComponent extends ModalHandler implements OnInit {
   private clientService = inject(ClientsService);
   private clientsState = inject(ClientsState);
   protected clients = this.clientsState.clients;
   protected loading = this.clientsState.loading;
+
+  constructor(dialogService: DialogService) {
+    super(dialogService);
+  }
 
   ngOnInit(): void {
     this.clientService.loadAll();
   }
 
   createClientModal() {
-    const header = 'Crear cliente';
-
-    this.dialogRef = this.dialogService.open(ClientFormComponent, {
-      header,
-      ...this.dialogConf,
-    });
-
-    this.dialogRef.onClose.pipe(take(1)).subscribe((result: Client) => {
-      if (!result) return;
-
-      this.clientService.createClient(result);
+    this.openModal(ClientFormComponent, {
+      header: 'Crear cliente',
+      onClose: (result: Client) => {
+        if (result) this.clientService.createClient(result);
+      },
     });
   }
 
   editClientModal(clientId: number) {
-    const header = 'Editar cliente';
     const client = this.clientsState.getById(clientId);
 
-    this.dialogRef = this.dialogService.open(ClientFormComponent, {
-      header,
-      ...this.dialogConf,
+    this.openModal(ClientFormComponent, {
+      header: 'Editar cliente s',
       inputValues: { client },
-    });
-
-    this.dialogRef.onClose.pipe(take(1)).subscribe((result: Client) => {
-      if (!result) return;
-
-      this.clientService.updateClient(result);
+      onClose: (result: Client) => {
+        if (result) this.clientService.updateClient(result);
+      },
     });
   }
 
   deleteClientModal(itemId: number) {
-    const header = 'Eliminar cliente';
     const client = this.clientsState.getById(itemId);
-    const customDialogConf = {
-      width: '30vw',
-      breakpoints: {
-        '1024px': '60vw',
-        '380px': '100%',
-      },
-    };
 
-    this.dialogRef = this.dialogService.open(DeleteClientFormComponent, {
-      header,
-      ...this.dialogConf,
+    this.openModal(DeleteClientFormComponent, {
+      header: 'Eliminar cliente',
       inputValues: { client },
-      ...customDialogConf,
-    });
-
-    this.dialogRef.onClose.pipe(take(1)).subscribe((result: Client) => {
-      if (!result) return;
-
-      this.clientService.deleteClient(result.id!);
+      width: '30vw',
+      onClose: (result: Client) => {
+        if (result) this.clientService.deleteClient(result.id!);
+      },
     });
   }
 }
