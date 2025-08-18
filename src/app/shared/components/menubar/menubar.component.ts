@@ -64,7 +64,7 @@ export class MenubarComponent implements OnInit {
       {
         label: 'Clientes',
         icon: 'pi pi-users',
-        routerLink: '',
+        routerLink: 'clients',
       },
       {
         label: 'Configuración',
