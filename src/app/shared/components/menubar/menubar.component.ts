@@ -69,7 +69,7 @@ export class MenubarComponent implements OnInit {
       {
         label: 'Configuración',
         icon: 'pi pi-cog',
-        routerLink: '',
+        routerLink: 'settings',
       },
     ];
   }

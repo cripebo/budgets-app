@@ -3,6 +3,7 @@ import { HomeComponent } from '../../features/home/pages/home/home.component';
 import { ItemsComponent } from '@features/items/pages/items/items.component';
 import { authGuard } from '@core/guards/auth.guard';
 import { ClientsComponent } from '@features/clients/pages/clients/clients.component';
+import { SettingsComponent } from '@features/settings/pages/settings/settings.component';
 
 export const MainRoutes: Routes = [
   {
@@ -23,6 +24,11 @@ export const MainRoutes: Routes = [
   {
     path: 'clients',
     component: ClientsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
     canActivate: [authGuard],
   },
 ];
