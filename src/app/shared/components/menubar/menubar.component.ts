@@ -26,7 +26,9 @@ import { AuthService } from '@core/auth/services/auth.service';
           <div class="p-menubar-item-content">
             <a pRipple class="p-ripple p-menubar-item-link">
               <span class="p-menubar-item-icon pi pi-sign-out"></span>
-              <span class="p-menubar-item-label">Cerrar sesión</span>
+              <span class="p-menubar-item-label hidden md:inline"
+                >Cerrar sesión</span
+              >
             </a>
           </div>
         </div>
