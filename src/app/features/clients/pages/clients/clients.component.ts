@@ -71,7 +71,7 @@ export class ClientsComponent extends ModalHandler implements OnInit {
     const client = this.clientsState.getById(clientId);
 
     this.openModal(ClientFormComponent, {
-      header: 'Editar cliente s',
+      header: 'Editar cliente',
       inputValues: { client },
       onClose: (result: Client) => {
         if (result) this.clientService.updateClient(result);
