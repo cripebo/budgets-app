@@ -1,5 +1,6 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, Injectable, Provider, signal } from '@angular/core';
 import { Settings } from './models/settings.model';
+import { CLEARABLE_STATE } from '@core/state/cleareable-state.token';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsState {
@@ -29,3 +30,7 @@ export class SettingsState {
     this._saving.set(false);
   }
 }
+
+export const provideSettingsState: Provider[] = [
+  { provide: CLEARABLE_STATE, useExisting: SettingsState, multi: true },
+];

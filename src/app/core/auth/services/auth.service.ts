@@ -9,12 +9,14 @@ import { environment } from '../../../../environments/environment';
 import { tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
+import { AppStateManager } from '@core/state/app-state-manager.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private appStateManager = inject(AppStateManager);
   private tokenService = inject(TokenService);
   private apiUrl = environment.apiUrl;
 
@@ -44,5 +46,6 @@ export class AuthService {
 
   logout() {
     this.tokenService.removeToken();
+    this.appStateManager.clearAll();
   }
 }

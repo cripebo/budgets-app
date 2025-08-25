@@ -1,5 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, Provider } from '@angular/core';
 import { Budget } from './models/budgets.model';
+import { CLEARABLE_STATE } from '@core/state/cleareable-state.token';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetsState {
@@ -50,3 +51,7 @@ export class BudgetsState {
     this._loaded.set(false);
   }
 }
+
+export const provideBudgetsState: Provider[] = [
+  { provide: CLEARABLE_STATE, useExisting: BudgetsState, multi: true },
+];

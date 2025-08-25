@@ -1,5 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, Provider } from '@angular/core';
 import { Item } from './models/items.model';
+import { CLEARABLE_STATE } from '@core/state/cleareable-state.token';
 
 @Injectable({ providedIn: 'root' })
 export class ItemsState {
@@ -68,3 +69,7 @@ export class ItemsState {
     this._loading.set(false);
   }
 }
+
+export const provideItemsState: Provider[] = [
+  { provide: CLEARABLE_STATE, useExisting: ItemsState, multi: true },
+];

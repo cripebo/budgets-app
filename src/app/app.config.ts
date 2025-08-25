@@ -11,6 +11,7 @@ import { providePrimeNG } from 'primeng/config';
 import MyPreset from './preset.primeng';
 import { routes } from './app.routes';
 import { authInterceptor } from '@core/interceptors/auth.interceptor';
+import { provideAppStates } from '@core/state/app-state.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,5 +28,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    provideAppStates(),
   ],
 };
