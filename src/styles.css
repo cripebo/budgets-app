@@ -19,3 +19,16 @@ html {
 .custom-message .p-message-text {
   font-weight: 400; /* Cambia a tu peso deseado */
 }
+
+.custom-color-picker {
+  border-radius: 6px;
+  outline: 1px solid #cbd5e1;
+  outline-offset: 2px;
+}
+
+/* PrimeNG replaces */
+
+.p-colorpicker-preview:enabled:focus-visible {
+  outline-width: 2px !important;
+  outline-offset: 3px !important;
+}

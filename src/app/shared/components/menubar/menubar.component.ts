@@ -61,7 +61,7 @@ export class MenubarComponent implements OnInit {
       {
         label: 'Estados',
         icon: 'pi pi-flag',
-        routerLink: '',
+        routerLink: 'states',
       },
       {
         label: 'Clientes',

@@ -4,6 +4,7 @@ import { ItemsComponent } from '@features/items/pages/items/items.component';
 import { authGuard } from '@core/guards/auth.guard';
 import { ClientsComponent } from '@features/clients/pages/clients/clients.component';
 import { SettingsComponent } from '@features/settings/pages/settings/settings.component';
+import { StatesComponent } from '@features/states/pages/states/states.component';
 
 export const MainRoutes: Routes = [
   {
@@ -19,6 +20,11 @@ export const MainRoutes: Routes = [
   {
     path: 'items',
     component: ItemsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'states',
+    component: StatesComponent,
     canActivate: [authGuard],
   },
   {
