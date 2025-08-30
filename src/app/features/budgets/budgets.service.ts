@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap, take, catchError, of, map } from 'rxjs';
+import { tap, take, catchError, of, map, finalize } from 'rxjs';
 import { BudgetsState } from './budgets.state';
-import { Budget } from './models/budgets.model';
+import { Budget, BudgetWithPrice } from './models/budgets.model';
 import { environment } from '@environments/environment';
+import { State } from '@features/states/models/states.model';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetsService {
@@ -14,16 +15,20 @@ export class BudgetsService {
     private state: BudgetsState,
   ) {}
 
-  private handleError(operation = 'operation') {
+  private handleError<T>(operation = 'operation', onErrorAction?: () => void) {
     return (error: any) => {
       console.error(`${operation} failed:`, error);
-      return of(null);
+      if (onErrorAction) {
+        onErrorAction();
+      }
+      return of<T | null>(null);
     };
   }
 
   loadAll(): void {
     if (this.state.hasBudgets()) return;
 
+    this.state.setLoading(true);
     this.http
       .get<{ data: Budget[]; success: boolean }>(`${this.urlBase}/budgets`)
       .pipe(
@@ -31,29 +36,46 @@ export class BudgetsService {
         tap((budgets) => this.state.setBudgets(budgets)),
         catchError(this.handleError('loadAll')),
         take(1),
+        finalize(() => this.state.setLoading(false)),
       )
       .subscribe();
   }
 
-  loadById(id: number): void {
-    const existing = this.state.getById(id);
-    if (existing) return;
-
-    this.http
-      .get<Budget>(`${this.urlBase}/budgets/${id}`)
+  createBudget(data: Partial<BudgetWithPrice>) {
+    return this.http
+      .post<{ data: number; success: boolean }>(`${this.urlBase}/budgets`, data)
       .pipe(
-        tap((budget) => this.state.addOrUpdateBudget(budget)),
-        catchError(this.handleError('loadById')),
+        tap((response) => {
+          if (!response.success) return;
+          this.refresh();
+        }),
+        catchError(
+          this.handleError<{ data: number; success: boolean }>('createBudget'),
+        ),
         take(1),
-      )
-      .subscribe();
+      );
   }
 
-  createBudget(data: Partial<Budget>): void {
+  changeStatus(budgetId: number, newState: State) {
+    const originalBudget = this.state.getById(budgetId);
+    if (!originalBudget) return;
+
+    const updatedBudget = structuredClone(originalBudget);
+    updatedBudget.status = newState;
+    this.state.updateBudget(updatedBudget);
+
     this.http
-      .post<Budget>(`${this.urlBase}/budgets`, data)
+      .patch<{ data: number; success: boolean }>(
+        `${this.urlBase}/budgets/${budgetId}`,
+        { statusId: newState.id },
+      )
       .pipe(
-        tap((budget) => this.state.addBudget(budget)),
+        tap(() => this.state.updateState(budgetId, newState)),
+        catchError(
+          this.handleError('changeStatus', () => {
+            this.state.updateBudget(originalBudget);
+          }),
+        ),
         take(1),
       )
       .subscribe();
@@ -83,8 +105,9 @@ export class BudgetsService {
 
   refresh(): void {
     this.http
-      .get<Budget[]>(`${this.urlBase}/budgets`)
+      .get<{ data: Budget[]; success: boolean }>(`${this.urlBase}/budgets`)
       .pipe(
+        map((response) => (response.success ? response.data : [])),
         tap((budgets) => this.state.setBudgets(budgets)),
         catchError(this.handleError('refresh')),
         take(1),

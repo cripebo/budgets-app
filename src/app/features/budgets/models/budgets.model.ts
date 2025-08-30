@@ -1,3 +1,5 @@
+import { State } from '@features/states/models/states.model';
+
 export interface Budget {
   id: number;
   name: string;
@@ -21,8 +23,14 @@ export interface Budget {
   client_email: string;
 
   status_id?: number | null;
+  status: State;
 
   user_id?: number | null;
+}
+
+export interface BudgetWithPrice
+  extends Omit<Budget, 'subtotal' | 'iva' | 'total'> {
+  price: BudgetPrice;
 }
 
 export interface BudgetItem {
@@ -32,4 +40,10 @@ export interface BudgetItem {
   quantity: number;
   unit: string;
   budget_id?: number | null;
+}
+
+export interface BudgetPrice {
+  subtotal: number;
+  iva: number;
+  total: number;
 }
