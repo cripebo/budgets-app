@@ -21,13 +21,13 @@ import { BudgetsListComponent } from './components/budgets-list/budgets-list.com
           />
         </a>
       </div>
-      <app-budgets-list [budgets]="budgets()" [loaded]="loaded()" />
+      <app-budgets-list [budgets]="budgets()" [loading]="loading()" />
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LastBudgetsComponent {
-  budgetsState = inject(BudgetsState);
-  budgets = this.budgetsState.budgets;
-  loaded = this.budgetsState.loaded;
+  private readonly budgetsState = inject(BudgetsState);
+  readonly budgets = this.budgetsState.budgets;
+  readonly loading = this.budgetsState.loading;
 }

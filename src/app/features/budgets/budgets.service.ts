@@ -42,6 +42,8 @@ export class BudgetsService {
   }
 
   createBudget(data: Partial<BudgetWithPrice>) {
+    data.created_at = new Date().toISOString();
+
     return this.http
       .post<{ data: number; success: boolean }>(`${this.urlBase}/budgets`, data)
       .pipe(

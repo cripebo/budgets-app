@@ -7,7 +7,7 @@ import { BudgetsListItemComponent } from '../budgets-list-item/budgets-list-item
   imports: [BudgetsListItemComponent],
   template: `
     <ul class="flex flex-col gap-4 divide-y divide-gray-200">
-      @if (loaded()) {
+      @if (!loading()) {
         @for (budget of budgets(); track $index) {
           <li>
             <app-budgets-list-item
@@ -38,5 +38,5 @@ import { BudgetsListItemComponent } from '../budgets-list-item/budgets-list-item
 })
 export class BudgetsListComponent {
   budgets = input<Budget[]>([]);
-  loaded = input<boolean>(false);
+  loading = input<boolean>(false);
 }

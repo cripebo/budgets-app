@@ -51,7 +51,7 @@ export class MenubarComponent implements OnInit {
       {
         label: 'Presupuestos',
         icon: 'pi pi-file',
-        routerLink: '',
+        routerLink: 'budgets',
       },
       {
         label: 'Conceptos',

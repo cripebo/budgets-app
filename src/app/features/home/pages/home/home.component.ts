@@ -10,6 +10,7 @@ import { BudgetsService } from '@features/budgets/budgets.service';
 import { LastBudgetsComponent } from '@features/home/components/last-budgets/last-budgets.component';
 import { RecentActivityComponent } from '@features/home/components/recent-activity/recent-activity.component';
 import { ActivityService } from '@core/activity/activity.service';
+import { ClientsService } from '@features/clients/clients.service';
 
 @Component({
   selector: 'app-home',
@@ -35,11 +36,13 @@ import { ActivityService } from '@core/activity/activity.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
-  private budgetsService = inject(BudgetsService);
-  private activityService = inject(ActivityService);
+  private readonly budgetsService = inject(BudgetsService);
+  private readonly activityService = inject(ActivityService);
+  private readonly clientsService = inject(ClientsService);
 
   ngOnInit(): void {
     this.budgetsService.loadAll();
     this.activityService.loadAll();
+    this.clientsService.loadAll();
   }
 }

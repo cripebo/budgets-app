@@ -36,6 +36,7 @@ import { Item } from '@features/items/models/items.model';
       [showLoader]="false"
       [paginator]="true"
       [rows]="itemsPerRow()"
+      [rowsPerPageOptions]="itemsPerRowOptions()"
     >
       <ng-template #caption>
         <div class="flex -mx-2">
@@ -91,9 +92,13 @@ import { Item } from '@features/items/models/items.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemsTableComponent {
+  private readonly DEFAUL_ITEMS_PER_ROW = 10;
+  private readonly DEFAUL_ROWS_PER_PAGE_OPTIONS = [10, 15, 20];
+
   items = input<Item[]>([]);
   loading = input(false);
-  itemsPerRow = input(8);
+  itemsPerRow = input(this.DEFAUL_ITEMS_PER_ROW);
+  itemsPerRowOptions = input(this.DEFAUL_ROWS_PER_PAGE_OPTIONS);
   table = viewChild<Table>('itemsTable');
 
   onEdit = output<number>();

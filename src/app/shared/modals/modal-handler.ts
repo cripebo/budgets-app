@@ -7,10 +7,12 @@ export abstract class ModalHandler {
   protected openModal<T>(
     component: any,
     options: {
-      header: string;
+      header?: string;
       inputValues?: Record<string, any>;
       width?: string;
       breakpoints?: Record<string, string>;
+      maximizable?: boolean;
+      focusOnShow?: boolean;
       onClose?: (result: T) => void;
     },
   ) {

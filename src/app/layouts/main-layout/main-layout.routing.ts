@@ -18,6 +18,13 @@ export const MainRoutes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'budgets',
+    loadChildren: () =>
+      import('../../features/budgets/budgets.routing').then(
+        (r) => r.BudgetsRoutes,
+      ),
+  },
+  {
     path: 'items',
     component: ItemsComponent,
     canActivate: [authGuard],

@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   imports: [],
   template: `
     <div
-      class="inline py-1 px-2 rounded-md"
+      class="inline-block py-1 px-2 rounded-md text-center font-semibold"
       [style]="{ background: colorBackground(), color: colorText() }"
     >
       {{ text().trim().length ? text() : DEFAULT_EMPTY_STRING }}
@@ -14,8 +14,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StateChipComponent {
-  DEFAULT_EMPTY_STRING = 'ejemplo';
+  private readonly DEFAULT_COLOR_BACKGROUND = '#000';
+  private readonly DEFAULT_COLOR_TEXT = '#FFF';
+  readonly DEFAULT_EMPTY_STRING = 'ejemplo';
+
   text = input<string>(this.DEFAULT_EMPTY_STRING);
-  colorBackground = input<string>('#000');
-  colorText = input<string>('#FFF');
+  colorBackground = input<string>(this.DEFAULT_COLOR_BACKGROUND);
+  colorText = input<string>(this.DEFAULT_COLOR_TEXT);
 }

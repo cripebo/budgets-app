@@ -1,14 +1,15 @@
 import { Injectable, signal, computed, Provider } from '@angular/core';
 import { Budget } from './models/budgets.model';
 import { CLEARABLE_STATE } from '@core/state/cleareable-state.token';
+import { State } from '@features/states/models/states.model';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetsState {
   private _budgets = signal<Budget[]>([]);
-  private _loaded = signal<boolean>(false);
+  private _loading = signal<boolean>(false);
 
   readonly budgets = computed(() => this._budgets());
-  readonly loaded = computed(() => this._loaded());
+  readonly loading = computed(() => this._loading());
 
   hasBudgets(): boolean {
     return this._budgets().length > 0;
@@ -20,7 +21,11 @@ export class BudgetsState {
 
   setBudgets(budgets: Budget[]) {
     this._budgets.set(budgets);
-    this._loaded.set(true);
+    this._loading.set(false);
+  }
+
+  setLoading(value: boolean) {
+    this._loading.set(value);
   }
 
   addBudget(budget: Budget) {
@@ -30,6 +35,17 @@ export class BudgetsState {
   updateBudget(budget: Budget) {
     this._budgets.update((prev) =>
       prev.map((b) => (b.id === budget.id ? budget : b)),
+    );
+  }
+
+  updateState(budgetId: number, newState: State) {
+    this._budgets.update((prev) =>
+      prev.map((b) => {
+        if (b.id !== budgetId) return b;
+
+        b.status = newState;
+        return b;
+      }),
     );
   }
 
@@ -48,7 +64,7 @@ export class BudgetsState {
 
   clear() {
     this._budgets.set([]);
-    this._loaded.set(false);
+    this._loading.set(false);
   }
 }
 
