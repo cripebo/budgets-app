@@ -14,10 +14,16 @@ import { StatesState } from '@features/states/states.state';
 import { ModalHandler } from '@shared/modals/modal-handler';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
+import { DeleteBudgetComponent } from '@features/budgets/components/budgets-table/components/delete-budget/delete-budget.component';
+import { Budget } from '@features/budgets/models/budgets.model';
 
 interface BudgetStateChangeEvent {
   budgetId: number;
   newStateId: number;
+}
+
+interface BudgetDeleteEvent {
+  budgetId: number;
 }
 
 @Component({
@@ -42,6 +48,7 @@ interface BudgetStateChangeEvent {
             [loading]="loading()"
             [budgets]="budgets()"
             (onChangeState)="changeBudgetState($event)"
+            (onDelete)="deleteBudgetModal($event)"
           />
         </div>
       </div>
@@ -82,6 +89,21 @@ export class BudgetsComponent extends ModalHandler implements OnInit {
     }
 
     this.budgetService.changeStatus(event.budgetId, state);
+  }
+
+  deleteBudgetModal(event: BudgetDeleteEvent) {
+    if (!event?.budgetId) return;
+
+    const budget = this.budgetsState.getById(event.budgetId);
+
+    this.openModal(DeleteBudgetComponent, {
+      header: 'Eliminar presupuesto',
+      inputValues: { budget },
+      width: '30vw',
+      onClose: (result: Budget) => {
+        if (result) this.budgetService.deleteBudget(event.budgetId);
+      },
+    });
   }
 
   private loadInitialData(): void {

@@ -92,7 +92,19 @@ import { State } from '@features/states/models/states.model';
           </td>
           <td>
             <div>
-              <app-budgets-table-actions />
+              <app-budgets-table-actions
+                (onDelete)="onDelete.emit({ budgetId: budget.id })"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="6" class="text-center py-8">
+            <div class="flex flex-col items-center gap-3 py-8">
+              <p class="text-gray-600">No hay presupuestos disponibles</p>
             </div>
           </td>
         </tr>
@@ -126,6 +138,7 @@ export class BudgetsTableComponent {
   table = viewChild<Table>('table');
 
   onChangeState = output<{ budgetId: number; newStateId: number }>();
+  onDelete = output<{ budgetId: number }>();
 
   onFilter(event: Event) {
     const input = event.target as HTMLInputElement;

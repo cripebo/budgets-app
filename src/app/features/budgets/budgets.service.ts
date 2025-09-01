@@ -95,11 +95,18 @@ export class BudgetsService {
   }
 
   deleteBudget(id: number): void {
+    const originalBudget = this.state.getById(id);
+    if (!originalBudget) return;
+
+    this.state.removeBudget(id);
     this.http
       .delete(`${this.urlBase}/budgets/${id}`)
       .pipe(
-        tap(() => this.state.removeBudget(id)),
-        catchError(this.handleError('deleteBudget')),
+        catchError(
+          this.handleError('deleteBudget', () => {
+            this.state.addBudget(originalBudget);
+          }),
+        ),
         take(1),
       )
       .subscribe();
