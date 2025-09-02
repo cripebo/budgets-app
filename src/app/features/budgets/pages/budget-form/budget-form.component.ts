@@ -1,49 +1,38 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   effect,
   inject,
   OnInit,
   signal,
 } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ClientFormFieldsComponent } from './components/client-form-fields/client-form-fields.component';
 import { CompanyFormFieldComponent } from './components/company-form-field/company-form-field.component';
-import { SelectModule } from 'primeng/select';
 import { ItemsFormTableComponent } from './components/items-form-table/items-form-table.component';
 import { ItemsService } from '@features/items/items.service';
 import { ClientsService } from '@features/clients/clients.service';
 import { ConditionsFormFieldsComponent } from './components/conditions-form-fields/conditions-form-fields.component';
 import { BudgetsService } from '@features/budgets/budgets.service';
 import { Budget, BudgetPrice } from '@features/budgets/models/budgets.model';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { BudgetCalculatorService } from '@features/budgets/services/budget-calculator.service';
+import { ToastService, ToastSeverity } from '@core/services/toast.service';
+import { budgetIsValid } from './validators/budget.validators';
+import { PriceFormFieldComponent } from './components/price-form-field/price-form-field.component';
+import { FormsImportsModule } from '@features/budgets/modules/budget-form-imports.module';
 
 @Component({
   selector: 'app-budget-form',
   imports: [
-    ReactiveFormsModule,
-    InputTextModule,
-    MessageModule,
-    ButtonModule,
+    FormsImportsModule,
     ClientFormFieldsComponent,
     CompanyFormFieldComponent,
-    SelectModule,
     ItemsFormTableComponent,
     ConditionsFormFieldsComponent,
-    InputNumberModule,
+    PriceFormFieldComponent,
   ],
   template: `
     <div class="box-container">
@@ -66,58 +55,7 @@ import { BudgetCalculatorService } from '@features/budgets/services/budget-calcu
           <app-client-form-fields [parentFormGroup]="budgetForm" />
           <app-items-form-table [parentFormGroup]="budgetForm" />
           <app-conditions-form-fields [parentFormGroup]="budgetForm" />
-
-          <form
-            [formGroup]="priceForm"
-            class="p-total-price-wrapper grid formgrid p-fluid pt-4 surface-border"
-          >
-            <div class="w-full flex justify-content-end">
-              <div class="col-12 md:col-4">
-                <h2 class="mt-0 mb-2 text-900 font-bold text-xl">Precio</h2>
-              </div>
-            </div>
-
-            <div class="w-full flex justify-end">
-              <div class="mb-4 flex gap-4 items-center">
-                <label class="font-medium">Subtotal sin IVA</label>
-                <p-inputNumber
-                  mode="currency"
-                  currency="EUR"
-                  formControlName="subtotal"
-                  [readonly]="true"
-                  styleClass="subtotal"
-                ></p-inputNumber>
-              </div>
-            </div>
-
-            <div class="w-full flex justify-end">
-              <div class="mb-4 flex gap-4 items-center">
-                <label class="font-medium">IVA</label>
-                <p-inputNumber
-                  inputId="percent"
-                  suffix=" %"
-                  formControlName="iva"
-                  [min]="0"
-                  [max]="999"
-                >
-                </p-inputNumber>
-              </div>
-            </div>
-
-            <div class="w-full flex justify-end">
-              <div class="mb-4 flex gap-4 items-center">
-                <label class="font-medium">Total</label>
-                <p-inputNumber
-                  mode="currency"
-                  currency="EUR"
-                  locale="es-ES"
-                  formControlName="total"
-                  [readonly]="true"
-                  styleClass="subtotal total"
-                ></p-inputNumber>
-              </div>
-            </div>
-          </form>
+          <app-price-form-field [parentFormGroup]="priceForm" />
 
           <div class="flex flex-col gap-2 mt-4">
             <p-message
@@ -137,6 +75,7 @@ import { BudgetCalculatorService } from '@features/budgets/services/budget-calcu
             [icon]="'pi pi-check'"
             (onClick)="create()"
             [loading]="saving()"
+            [disabled]="saving()"
           />
         </div>
       </form>
@@ -151,12 +90,13 @@ export class BudgetFormComponent implements OnInit {
   private clientsService = inject(ClientsService);
   private budgetService = inject(BudgetsService);
   private budgetCalculatorService = inject(BudgetCalculatorService);
+  private toastService = inject(ToastService);
   saving = signal(false);
 
   budgetForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
     company: this.fb.nonNullable.group({
-      'company-name': [''],
+      'company-name': ['', Validators.required],
       'company-address': [''],
       'company-nif': [''],
       'company-phone': [''],
@@ -204,6 +144,13 @@ export class BudgetFormComponent implements OnInit {
   }
 
   create() {
+    const { valid, errors } = budgetIsValid(this.budgetForm);
+
+    if (!valid) {
+      this.showBudgetErrors(errors);
+      return;
+    }
+
     const budget = this.budgetForm.value as Budget;
     const price = this.priceForm.value as BudgetPrice;
 
@@ -216,5 +163,12 @@ export class BudgetFormComponent implements OnInit {
 
         this.router.navigate(['/budgets']);
       });
+  }
+
+  showBudgetErrors(errors: Record<string, string>) {
+    const warningTitle = 'Campos requeridos';
+    Object.values(errors).forEach((error) => {
+      this.toastService.show(ToastSeverity.warn, warningTitle, error);
+    });
   }
 }
