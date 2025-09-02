@@ -17,13 +17,13 @@ import { InputTextModule } from 'primeng/inputtext';
   template: `
     <section [formGroup]="parentFormGroup()">
       <div formGroupName="company" class="flex flex-col gap-2 pb-8">
-        <h3 for="client-name" class="font-semibold text-md">
+        <h3 for="client-name" class="font-semibold text-xl">
           Datos sobre tu empresa
         </h3>
 
         <div class="flex flex-col gap-8">
           <div class="flex flex-col gap-2">
-            <label for="company-name">Nombre</label>
+            <label for="company-name">Nombre*</label>
             <input
               pInputText
               id="company-name"

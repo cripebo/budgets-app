@@ -36,11 +36,11 @@ import { FormsImportsModule } from '@features/budgets/modules/budget-form-import
   ],
   template: `
     <div class="box-container">
-      <h1 class="font-bold text-xl pb-4">Crear un nuevo presupuesto</h1>
+      <h1 class="font-semibold text-xl pb-4">Crear un nuevo presupuesto</h1>
       <form [formGroup]="budgetForm" class="flex flex-col gap-4">
         <div class="grid grid-cols-1 gap-4 divide-y divide-gray-200">
           <div class="flex flex-col gap-2 pb-8">
-            <label for="client-name" class="font-semibold text-md"
+            <label for="client-name" class="font-normal text-md"
               >Nombre del presupuesto*</label
             >
             <input
@@ -72,7 +72,6 @@ import { FormsImportsModule } from '@features/budgets/modules/budget-form-import
         <div class="flex justify-end">
           <p-button
             [label]="'Crear presupuesto'"
-            [icon]="'pi pi-check'"
             (onClick)="create()"
             [loading]="saving()"
             [disabled]="saving()"

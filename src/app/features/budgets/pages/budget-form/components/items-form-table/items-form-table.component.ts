@@ -34,8 +34,10 @@ import { InputTextModule } from 'primeng/inputtext';
   providers: [DialogService],
   template: `
     <div class="flex flex-col gap-2 pb-8">
-      <label for="client-name" class="font-semibold text-md">Conceptos</label>
-      <div class="flex justify-end">
+      <div class="flex justify-between">
+        <label for="client-name" class="font-semibold text-xl"
+          >Conceptos*</label
+        >
         <p-button
           [label]="'Añadir concepto'"
           [icon]="'pi pi-plus'"
@@ -137,6 +139,17 @@ import { InputTextModule } from 'primeng/inputtext';
         </p-table>
       </form>
     </div>
+  `,
+  styles: `
+    :host ::ng-deep .p-datatable-thead > tr > th {
+      padding-left: 0 !important;
+    }
+
+    :host ::ng-deep .p-datatable-tbody > tr > td {
+      padding-left: 0;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

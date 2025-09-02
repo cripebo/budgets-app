@@ -20,7 +20,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
   template: `
     <section [formGroup]="parentFormGroup()">
       <div formGroupName="client" class="flex flex-col gap-4 pb-8">
-        <h3 for="client-name" class="font-semibold text-md">
+        <h3 for="client-name" class="font-semibold text-xl">
           Datos sobre el cliente
         </h3>
 

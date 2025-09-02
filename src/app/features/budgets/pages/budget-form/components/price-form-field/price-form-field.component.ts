@@ -13,19 +13,16 @@ import { InputNumberModule } from 'primeng/inputnumber';
   selector: 'app-price-form-field',
   imports: [ReactiveFormsModule, InputNumberModule],
   template: `
-    <form
-      [formGroup]="parentFormGroup()"
-      class="p-total-price-wrapper grid formgrid p-fluid pt-4 surface-border"
-    >
-      <div class="w-full flex justify-content-end">
-        <div class="col-12 md:col-4">
-          <h2 class="mt-0 mb-2 text-900 font-bold text-xl">Precio</h2>
+    <form [formGroup]="parentFormGroup()" class="flex flex-col justify-end">
+      <div class="flex justify-end">
+        <div class="mb-4 flex flex-col gap-2 w-full sm:w-[400px] md:w-[450px]">
+          <h2 class="mt-0 text-900 font-bold text-xl">Precio</h2>
         </div>
       </div>
 
       <div class="w-full flex justify-end">
-        <div class="mb-4 flex gap-4 items-center">
-          <label class="font-medium">Subtotal sin IVA</label>
+        <div class="mb-4 flex flex-col gap-2 w-full sm:w-[400px] md:w-[450px]">
+          <label class="font-medium text-sm">Subtotal sin IVA</label>
           <p-inputNumber
             mode="currency"
             currency="EUR"
@@ -37,8 +34,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
       </div>
 
       <div class="w-full flex justify-end">
-        <div class="mb-4 flex gap-4 items-center">
-          <label class="font-medium">IVA</label>
+        <div class="mb-4 flex flex-col gap-2 w-full sm:w-[400px] md:w-[450px]">
+          <label class="font-medium text-sm">IVA</label>
           <p-inputNumber
             inputId="percent"
             suffix=" %"
@@ -51,8 +48,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
       </div>
 
       <div class="w-full flex justify-end">
-        <div class="mb-4 flex gap-4 items-center">
-          <label class="font-medium">Total</label>
+        <div class="mb-4 flex flex-col gap-2 w-full sm:w-[400px] md:w-[450px]">
+          <label class="font-medium text-sm">Total</label>
           <p-inputNumber
             mode="currency"
             currency="EUR"
