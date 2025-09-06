@@ -26,6 +26,8 @@ export interface Budget {
   status: State;
 
   user_id?: number | null;
+
+  items?: BudgetItem[];
 }
 
 export interface BudgetWithPrice

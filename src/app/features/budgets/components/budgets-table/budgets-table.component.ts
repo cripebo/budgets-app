@@ -93,6 +93,7 @@ import { State } from '@features/states/models/states.model';
           <td>
             <div>
               <app-budgets-table-actions
+                (onPreview)="onPreview.emit({ budgetId: budget.id })"
                 (onDelete)="onDelete.emit({ budgetId: budget.id })"
               />
             </div>
@@ -138,6 +139,7 @@ export class BudgetsTableComponent {
   table = viewChild<Table>('table');
 
   onChangeState = output<{ budgetId: number; newStateId: number }>();
+  onPreview = output<{ budgetId: number }>();
   onDelete = output<{ budgetId: number }>();
 
   onFilter(event: Event) {

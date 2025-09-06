@@ -16,10 +16,15 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
 import { DeleteBudgetComponent } from '@features/budgets/components/budgets-table/components/delete-budget/delete-budget.component';
 import { Budget } from '@features/budgets/models/budgets.model';
+import { BudgetPreviewComponent } from '@features/budgets/components/budget-preview/budget-preview.component';
 
 interface BudgetStateChangeEvent {
   budgetId: number;
   newStateId: number;
+}
+
+interface BudgetPreviewEvent {
+  budgetId: number;
 }
 
 interface BudgetDeleteEvent {
@@ -48,6 +53,7 @@ interface BudgetDeleteEvent {
             [loading]="loading()"
             [budgets]="budgets()"
             (onChangeState)="changeBudgetState($event)"
+            (onPreview)="previewBudgetModal($event)"
             (onDelete)="deleteBudgetModal($event)"
           />
         </div>
@@ -91,6 +97,22 @@ export class BudgetsComponent extends ModalHandler implements OnInit {
     this.budgetService.changeStatus(event.budgetId, state);
   }
 
+  previewBudgetModal(event: BudgetPreviewEvent) {
+    if (!event?.budgetId) return;
+
+    const budget = this.budgetsState.getById(event.budgetId);
+
+    this.loadBudgetDetails(event.budgetId);
+    this.openModal(BudgetPreviewComponent, {
+      header: '',
+      inputValues: { budget },
+      width: '70vw',
+      breakpoints: {
+        '1040px': '100%',
+      },
+    });
+  }
+
   deleteBudgetModal(event: BudgetDeleteEvent) {
     if (!event?.budgetId) return;
 
@@ -110,5 +132,9 @@ export class BudgetsComponent extends ModalHandler implements OnInit {
     this.budgetService.loadAll();
     this.statesService.loadAll();
     this.itemsService.loadAll();
+  }
+
+  private loadBudgetDetails(budgetId: number): void {
+    this.budgetService.loadDetailsById(budgetId);
   }
 }

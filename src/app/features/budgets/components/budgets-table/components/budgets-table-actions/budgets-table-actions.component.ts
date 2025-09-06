@@ -9,6 +9,13 @@ import { ButtonModule } from 'primeng/button';
     <div class="flex gap-2">
       <p-button
         size="small"
+        icon="pi pi-eye"
+        [rounded]="true"
+        severity="secondary"
+        (onClick)="onPreview.emit()"
+      />
+      <p-button
+        size="small"
         icon="pi pi-trash"
         [rounded]="true"
         severity="secondary"
@@ -19,5 +26,6 @@ import { ButtonModule } from 'primeng/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BudgetsTableActionsComponent {
+  onPreview = output();
   onDelete = output();
 }

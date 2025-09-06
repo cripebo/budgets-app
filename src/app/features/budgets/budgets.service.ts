@@ -5,6 +5,8 @@ import { BudgetsState } from './budgets.state';
 import { Budget, BudgetWithPrice } from './models/budgets.model';
 import { environment } from '@environments/environment';
 import { State } from '@features/states/models/states.model';
+import { ItemsState } from '@features/items/items.state';
+import { BudgetItemsState } from './budget-items.state';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetsService {
@@ -13,6 +15,7 @@ export class BudgetsService {
   constructor(
     private http: HttpClient,
     private state: BudgetsState,
+    private budgetItemsState: BudgetItemsState,
   ) {}
 
   private handleError<T>(operation = 'operation', onErrorAction?: () => void) {
@@ -37,6 +40,25 @@ export class BudgetsService {
         catchError(this.handleError('loadAll')),
         take(1),
         finalize(() => this.state.setLoading(false)),
+      )
+      .subscribe();
+  }
+
+  loadDetailsById(budgetId: number) {
+    if (this.budgetItemsState.isLoaded(budgetId)) return;
+
+    this.http
+      .get<{
+        data: Budget;
+        success: boolean;
+      }>(`${this.urlBase}/budgets/${budgetId}`)
+      .pipe(
+        map((response) => response.data),
+        tap((budget) =>
+          this.budgetItemsState.setItems(budgetId, budget.items!),
+        ),
+        catchError(this.handleError('loadDetailsById')),
+        take(1),
       )
       .subscribe();
   }
