@@ -165,7 +165,7 @@ export class BudgetFormComponent implements OnInit {
   }
 
   showBudgetErrors(errors: Record<string, string>) {
-    const warningTitle = 'Campos requeridos';
+    const warningTitle = 'Campos inválidos';
     Object.values(errors).forEach((error) => {
       this.toastService.show(ToastSeverity.warn, warningTitle, error);
     });
