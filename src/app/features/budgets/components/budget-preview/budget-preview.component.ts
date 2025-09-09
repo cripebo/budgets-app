@@ -5,19 +5,32 @@ import {
   computed,
   inject,
   input,
-  OnInit,
-  Signal,
   signal,
 } from '@angular/core';
+import { PdfService } from '@core/services/download-pdf.service';
 import { BudgetItemsState } from '@features/budgets/budget-items.state';
-import { BudgetsService } from '@features/budgets/budgets.service';
-import { Budget, BudgetItem } from '@features/budgets/models/budgets.model';
+import { Budget } from '@features/budgets/models/budgets.model';
+import { formatDateDDMMYYYY } from '@shared/utils/date-format';
+import { downloadBlob } from '@shared/utils/file-downloader';
+import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { finalize } from 'rxjs';
 
 @Component({
-  imports: [TableModule, DatePipe, CurrencyPipe],
+  imports: [TableModule, ButtonModule, DatePipe, CurrencyPipe],
   template: `
-    <div class="flex flex-col gap-12 px-8" ref="print">
+    <div class="flex justify-end mb-4">
+      <p-button
+        label="Generar PDF"
+        icon="pi pi-file-pdf"
+        class="mt-1.5"
+        aria-label="Generar PDF"
+        [loading]="generating()"
+        (onClick)="download()"
+        styleClass="w-fit sm:w-50"
+      />
+    </div>
+    <div #preview class="flex flex-col gap-12 px-8" ref="print">
       <section class="flex flex-col gap-4">
         <h1 class="font-semibold text-2xl">PRESUPUESTO</h1>
         <div>
@@ -187,7 +200,9 @@ import { TableModule } from 'primeng/table';
 })
 export class BudgetPreviewComponent {
   private readonly budgetItemsState = inject(BudgetItemsState);
+  private readonly pdfService = inject(PdfService);
   readonly budget = input.required<Budget>();
+  readonly generating = signal(false);
 
   readonly budgetItems = computed(() =>
     this.budgetItemsState.itemsForBudget(this.budget().id)(),
@@ -196,4 +211,16 @@ export class BudgetPreviewComponent {
   readonly loading = computed(() => {
     return !this.budgetItemsState.isLoaded(this.budget().id);
   });
+
+  download() {
+    this.generating.set(true);
+    this.pdfService
+      .downloadBudgetPdf(this.budget().id)
+      .pipe(finalize(() => this.generating.set(false)))
+      .subscribe((blob) => {
+        const formattedDate = formatDateDDMMYYYY(this.budget().created_at);
+        const pdfName = `presupuesto-${this.budget().id}-${formattedDate}.pdf`;
+        downloadBlob(blob, pdfName);
+      });
+  }
 }
