@@ -1,5 +1,11 @@
 import { BudgetsService } from '@features/budgets/budgets.service';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { BudgetsState } from '@features/budgets/budgets.state';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -7,10 +13,17 @@ import { BudgetsListComponent } from './components/budgets-list/budgets-list.com
 import { ModalHandler } from '@shared/modals/modal-handler';
 import { DialogService } from 'primeng/dynamicdialog';
 import { BudgetPreviewComponent } from '@features/budgets/components/budget-preview/budget-preview.component';
+import { PaginationControlsComponent } from '@shared/components/pagination-controls/pagination-controls.component';
+import { PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-last-budgets',
-  imports: [RouterLink, ButtonModule, BudgetsListComponent],
+  imports: [
+    RouterLink,
+    ButtonModule,
+    BudgetsListComponent,
+    PaginationControlsComponent,
+  ],
   providers: [DialogService],
   template: `
     <div class="box-container">
@@ -27,9 +40,17 @@ import { BudgetPreviewComponent } from '@features/budgets/components/budget-prev
         </a>
       </div>
       <app-budgets-list
-        [budgets]="budgets()"
+        [budgets]="paginatedBudgets()"
         [loading]="loading()"
         (onPreview)="previewBudget($event)"
+      />
+
+      <app-pagination-controls
+        [first]="first()"
+        [rows]="rows()"
+        [totalRecords]="budgets().length"
+        [rowsPerPageOptions]="[]"
+        (pageChange)="onPageChange($event)"
       />
     </div>
   `,
@@ -42,8 +63,22 @@ export class LastBudgetsComponent extends ModalHandler {
 
   private readonly budgetsService = inject(BudgetsService);
   private readonly budgetsState = inject(BudgetsState);
+
   readonly budgets = this.budgetsState.budgets;
   readonly loading = this.budgetsState.loading;
+
+  readonly first = signal(0);
+  readonly rows = signal(5);
+
+  readonly paginatedBudgets = computed(() => {
+    const start = this.first();
+    return this.budgets().slice(start, start + this.rows());
+  });
+
+  onPageChange(event: PaginatorState) {
+    this.first.set(event.first ?? this.first());
+    this.rows.set(event.rows ?? this.rows());
+  }
 
   previewBudget(event: { budgetId: number }) {
     const budget = this.budgetsState.getById(event.budgetId);
