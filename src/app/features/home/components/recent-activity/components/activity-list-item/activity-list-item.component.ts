@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
   template: `
     <div class="flex justify-between py-2 rounded items-center">
       <div class="flex-1">
-        <div class="line-clamp-1 flex items-center gap-1.5">
+        <div class="line-clamp-1 flex items-start gap-3">
           <app-activity-action-icon [action]="activity().action" />
           <p class="line-clamp-2">
             {{ activityLabelService.getLabel(activity())?.prefix }}

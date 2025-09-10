@@ -26,7 +26,7 @@ import { PaginatorState } from 'primeng/paginator';
   ],
   providers: [DialogService],
   template: `
-    <div class="box-container">
+    <div class="box-container min-h-[655px]">
       <div
         class="pb-6 flex flex-col sm:flex-row justify-between sm:items-center"
       >

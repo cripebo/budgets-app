@@ -9,7 +9,7 @@ import { Activity } from '@core/activity/models/activity.model';
     <ul class="flex flex-col divide-y divide-gray-200">
       @if (loaded()) {
         @for (activity of activities(); track $index) {
-          <li class="py-2">
+          <li class="py-2 activity-container-min-h grid items-center">
             <app-activity-list-item [activity]="activity" />
           </li>
         } @empty {
@@ -27,6 +27,11 @@ import { Activity } from '@core/activity/models/activity.model';
         </li>
       }
     </ul>
+  `,
+  styles: `
+    .activity-container-min-h {
+      min-height: 82px;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
