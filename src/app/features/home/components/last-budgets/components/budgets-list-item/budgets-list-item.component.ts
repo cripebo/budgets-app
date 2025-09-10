@@ -1,16 +1,20 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
 import { ElapsedTimePipe } from '@shared/pipes/elapsed-time.pipe';
 
 @Component({
   selector: 'app-budgets-list-item',
-  imports: [CurrencyPipe, ElapsedTimePipe, RouterLink],
+  imports: [CurrencyPipe, ElapsedTimePipe],
   template: `
     <a
-      [routerLink]="['/budgets', id()]"
       id="budget-info"
       class="flex flex-row justify-between pb-2 hover:bg-gray-50 hover:cursor-pointer"
+      (click)="onPreview.emit()"
     >
       <div class="flex-1">
         <h3 class="budget-info--title text-base line-clamp-1" [title]="name()">
@@ -42,4 +46,6 @@ export class BudgetsListItemComponent {
       return value?.trim().length ? value : this.NO_CLIENT_LABEL;
     },
   });
+
+  onPreview = output();
 }

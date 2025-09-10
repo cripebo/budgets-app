@@ -153,15 +153,6 @@ import { finalize } from 'rxjs';
         </p-table>
       </section>
 
-      @if (budget().conditions) {
-        <section class="min-h-24">
-          <h3 class="border-b border-gray-300 font-semibold mb-2">
-            Comentarios
-          </h3>
-          <p class="text-sm">{{ budget().conditions }}</p>
-        </section>
-      }
-
       <table
         id="preview-budget-price"
         class="ml-auto border border-gray-300 text-sm"
@@ -185,6 +176,15 @@ import { finalize } from 'rxjs';
           </tr>
         </tbody>
       </table>
+
+      @if (budget().conditions) {
+        <section class="min-h-24">
+          <h3 class="border-b border-gray-300 font-semibold mb-2">
+            Comentarios
+          </h3>
+          <p class="text-sm">{{ budget().conditions }}</p>
+        </section>
+      }
     </div>
   `,
   styles: `
