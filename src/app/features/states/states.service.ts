@@ -4,6 +4,7 @@ import { StatesState } from './states.state';
 import { HttpClient } from '@angular/common/http';
 import { catchError, finalize, map, of, take, tap } from 'rxjs';
 import { State } from './models/states.model';
+import { ToastService, ToastSeverity } from '@core/services/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class StatesService {
   constructor(
     private http: HttpClient,
     private state: StatesState,
+    private toastService: ToastService,
   ) {}
 
   private handleError<T>(operation = 'operation', onErrorAction?: () => void) {
@@ -93,10 +95,15 @@ export class StatesService {
     this.http
       .delete(`${this.urlBase}/states/${id}`)
       .pipe(
-        catchError(
+        catchError((err) =>
           this.handleError('deleteState', () => {
             this.state.addState(originalState);
-          }),
+            this.toastService.show(
+              ToastSeverity.warn,
+              'No se ha podido eliminar',
+              err.error?.message ?? 'Error desconocido',
+            );
+          })(err),
         ),
         take(1),
       )
