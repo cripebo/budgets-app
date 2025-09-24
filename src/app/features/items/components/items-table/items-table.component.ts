@@ -13,6 +13,7 @@ import { Table, TableModule } from 'primeng/table';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ItemsTableActionsComponent } from './components/items-table-actions/items-table-actions.component';
 import { Item } from '@features/items/models/items.model';
+import { ItemCategoryBadgeComponent } from '../item-category-badge/item-category-badge.component';
 
 @Component({
   selector: 'app-items-table',
@@ -24,6 +25,7 @@ import { Item } from '@features/items/models/items.model';
     CurrencyPipe,
     ItemsTableActionsComponent,
     SkeletonModule,
+    ItemCategoryBadgeComponent,
   ],
   template: `
     <p-table
@@ -31,7 +33,7 @@ import { Item } from '@features/items/models/items.model';
       [value]="items()"
       stripedRows
       size="small"
-      [globalFilterFields]="['name', 'price']"
+      [globalFilterFields]="['name', 'category_name', 'price']"
       [loading]="loading()"
       [showLoader]="false"
       [paginator]="true"
@@ -58,6 +60,7 @@ import { Item } from '@features/items/models/items.model';
       <ng-template #header>
         <tr>
           <th>Nombre</th>
+          <th>Categoria</th>
           <th>Precio</th>
           <th></th>
         </tr>
@@ -65,6 +68,9 @@ import { Item } from '@features/items/models/items.model';
       <ng-template #body let-item>
         <tr>
           <td>{{ item.name }}</td>
+          <td>
+            <app-item-category-badge [categoryName]="item.category_name" />
+          </td>
           <td>{{ item.price | currency: 'EUR' : 'symbol' : '1.0-2' }}</td>
           <td>
             <app-items-table-actions

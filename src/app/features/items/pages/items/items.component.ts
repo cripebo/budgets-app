@@ -13,6 +13,7 @@ import { ItemFormComponent } from '../item-form/item-form.component';
 import { DeleteItemFormComponent } from '../delete-item-form/delete-item-form.component';
 import { Item } from '@features/items/models/items.model';
 import { ModalHandler } from '@shared/modals/modal-handler';
+import { ItemCategoriesService } from '@features/items/services/item-categories.service';
 
 @Component({
   selector: 'app-items',
@@ -45,6 +46,7 @@ import { ModalHandler } from '@shared/modals/modal-handler';
 })
 export class ItemsComponent extends ModalHandler implements OnInit {
   private itemsService = inject(ItemsService);
+  private itemCategoriesService = inject(ItemCategoriesService);
   private itemsState = inject(ItemsState);
   protected items = this.itemsState.items;
   protected loading = this.itemsState.loading;
@@ -55,6 +57,7 @@ export class ItemsComponent extends ModalHandler implements OnInit {
 
   ngOnInit(): void {
     this.itemsService.loadAll();
+    this.itemCategoriesService.loadAll();
   }
 
   createItemModal() {
