@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { ItemsState } from './items.state';
+import { ItemsState } from '../states/items.state';
 import { HttpClient } from '@angular/common/http';
 import { catchError, finalize, map, of, take, tap } from 'rxjs';
-import { Item } from './models/items.model';
+import { Item } from '../models/items.model';
 
 @Injectable({
   providedIn: 'root',

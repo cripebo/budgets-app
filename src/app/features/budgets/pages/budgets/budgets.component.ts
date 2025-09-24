@@ -1,4 +1,4 @@
-import { ItemsService } from '@features/items/items.service';
+import { ItemsService } from '@features/items/services/items.service';
 import {
   ChangeDetectionStrategy,
   Component,

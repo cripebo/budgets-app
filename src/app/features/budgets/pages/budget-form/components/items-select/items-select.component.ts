@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Item } from '@features/items/models/items.model';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { ItemsState } from '@features/items/items.state';
+import { ItemsState } from '@features/items/states/items.state';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CurrencyPipe } from '@angular/common';
 

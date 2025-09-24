@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 import { ItemsTableComponent } from '@features/items/components/items-table/items-table.component';
 import { ItemsActionsComponent } from '@features/items/components/items-actions/items-actions.component';
-import { ItemsService } from '@features/items/items.service';
-import { ItemsState } from '@features/items/items.state';
+import { ItemsService } from '@features/items/services/items.service';
+import { ItemsState } from '@features/items/states/items.state';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ItemFormComponent } from '../item-form/item-form.component';
 import { DeleteItemFormComponent } from '../delete-item-form/delete-item-form.component';

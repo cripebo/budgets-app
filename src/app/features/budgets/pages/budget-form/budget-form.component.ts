@@ -10,7 +10,7 @@ import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ClientFormFieldsComponent } from './components/client-form-fields/client-form-fields.component';
 import { CompanyFormFieldComponent } from './components/company-form-field/company-form-field.component';
 import { ItemsFormTableComponent } from './components/items-form-table/items-form-table.component';
-import { ItemsService } from '@features/items/items.service';
+import { ItemsService } from '@features/items/services/items.service';
 import { ClientsService } from '@features/clients/clients.service';
 import { ConditionsFormFieldsComponent } from './components/conditions-form-fields/conditions-form-fields.component';
 import { BudgetsService } from '@features/budgets/budgets.service';

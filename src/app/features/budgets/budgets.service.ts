@@ -5,7 +5,7 @@ import { BudgetsState } from './budgets.state';
 import { Budget, BudgetWithPrice } from './models/budgets.model';
 import { environment } from '@environments/environment';
 import { State } from '@features/states/models/states.model';
-import { ItemsState } from '@features/items/items.state';
+import { ItemsState } from '@features/items/states/items.state';
 import { BudgetItemsState } from './budget-items.state';
 
 @Injectable({ providedIn: 'root' })

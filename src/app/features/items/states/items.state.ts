@@ -1,5 +1,5 @@
 import { Injectable, signal, computed, Provider } from '@angular/core';
-import { Item } from './models/items.model';
+import { Item } from '../models/items.model';
 import { CLEARABLE_STATE } from '@core/state/cleareable-state.token';
 
 @Injectable({ providedIn: 'root' })
