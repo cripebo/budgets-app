@@ -69,7 +69,7 @@ import { ItemCategoryBadgeComponent } from '../item-category-badge/item-category
         <tr>
           <td>{{ item.name }}</td>
           <td>
-            <app-item-category-badge [categoryName]="item.category_name" />
+            <app-item-category-badge [categoryId]="item.category_id" />
           </td>
           <td>{{ item.price | currency: 'EUR' : 'symbol' : '1.0-2' }}</td>
           <td>

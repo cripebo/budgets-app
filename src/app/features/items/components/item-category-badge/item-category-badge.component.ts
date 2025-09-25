@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+} from '@angular/core';
+import { ItemCategoriesState } from '@features/items/states/item-categories.state';
 
 @Component({
   selector: 'app-item-category-badge',
@@ -7,11 +14,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     <div
       class="inline-block py-1 px-2 rounded-md text-center font-semibold text-nowrap bg-gray-200 text-gray-700"
     >
-      {{ categoryName() ?? 'Sin categoría' }}
+      {{ displayName()?.name ?? 'Sin categoría' }}
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCategoryBadgeComponent {
-  categoryName = input.required<string | null>();
+  itemsCategoryState = inject(ItemCategoriesState);
+  categoryId = input.required<number | null>();
+  displayName = computed(() =>
+    this.itemsCategoryState.getById(this.categoryId() ?? -1),
+  );
 }

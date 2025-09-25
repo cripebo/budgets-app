@@ -14,6 +14,7 @@ import { DeleteItemFormComponent } from '../delete-item-form/delete-item-form.co
 import { Item } from '@features/items/models/items.model';
 import { ModalHandler } from '@shared/modals/modal-handler';
 import { ItemCategoriesService } from '@features/items/services/item-categories.service';
+import { ItemCategoriesState } from '@features/items/states/item-categories.state';
 
 @Component({
   selector: 'app-items',
@@ -48,7 +49,9 @@ export class ItemsComponent extends ModalHandler implements OnInit {
   private itemsService = inject(ItemsService);
   private itemCategoriesService = inject(ItemCategoriesService);
   private itemsState = inject(ItemsState);
+  private itemCategoriesState = inject(ItemCategoriesState);
   protected items = this.itemsState.items;
+  protected categories = this.itemCategoriesState.categories;
   protected loading = this.itemsState.loading;
 
   constructor(dialogService: DialogService) {
@@ -63,6 +66,7 @@ export class ItemsComponent extends ModalHandler implements OnInit {
   createItemModal() {
     this.openModal(ItemFormComponent, {
       header: 'Crear concepto',
+      inputValues: { categories: this.categories() },
       onClose: (result: Item) => {
         if (result) this.itemsService.createItem(result);
       },
@@ -74,7 +78,7 @@ export class ItemsComponent extends ModalHandler implements OnInit {
 
     this.openModal(ItemFormComponent, {
       header: 'Editar concepto',
-      inputValues: { item },
+      inputValues: { item, categories: this.categories() },
       onClose: (result: Item) => {
         if (result) this.itemsService.updateItem(result);
       },

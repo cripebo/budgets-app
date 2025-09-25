@@ -11,6 +11,8 @@ import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { Item } from '@features/items/models/items.model';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { SelectModule } from 'primeng/select';
+import { ItemCategoriesState } from '@features/items/states/item-categories.state';
 
 @Component({
   selector: 'app-item-form',
@@ -20,10 +22,11 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
     InputNumberModule,
     ButtonModule,
     MessageModule,
+    SelectModule,
   ],
   template: `
     <form [formGroup]="itemForm" class="flex flex-col gap-4">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4">
         <div class="flex flex-col gap-2">
           <label for="item-name">Nombre</label>
           <input
@@ -51,6 +54,8 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
             }}</p-message
           >
         </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="flex flex-col gap-2">
           <label for="currency-price">Precio</label>
           <p-inputnumber
@@ -81,8 +86,20 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
             }}</p-message
           >
         </div>
+        <div class="flex flex-col gap-2">
+          <label for="currency-price">Categoría</label>
+          <p-select
+            formControlName="category_id"
+            [options]="categories()"
+            [checkmark]="true"
+            [showClear]="true"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Sin categoría"
+            class="w-full"
+          />
+        </div>
       </div>
-
       <div class="flex justify-end">
         <p-button
           [label]="isEditMode ? 'Editar' : 'Crear'"
@@ -100,10 +117,12 @@ export class ItemFormComponent {
   private dialogRef = inject(DynamicDialogRef);
 
   item = input<Item | null>(null);
+  categories = input<ItemCategoriesState[]>([]);
 
   itemForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
     price: [0, [Validators.required]],
+    category_id: this.fb.control<number | null>(null),
   });
 
   get isEditMode() {
@@ -120,13 +139,16 @@ export class ItemFormComponent {
     if (this.itemForm.invalid) return;
     const formValue = this.itemForm.value;
 
-    this.dialogRef.close(formValue);
+    this.dialogRef.close({ ...formValue });
   }
 
   edit() {
     if (this.itemForm.invalid) return;
     const formValue = this.itemForm.value;
 
-    this.dialogRef.close({ id: this.item()!.id, ...formValue });
+    this.dialogRef.close({
+      id: this.item()!.id,
+      ...formValue,
+    });
   }
 }
