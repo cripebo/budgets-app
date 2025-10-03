@@ -90,6 +90,7 @@ import { ItemCategoriesState } from '@features/items/states/item-categories.stat
           <label for="currency-price">Categoría</label>
           <p-select
             formControlName="category_id"
+            appendTo="body"
             [options]="categories()"
             [checkmark]="true"
             [showClear]="true"
