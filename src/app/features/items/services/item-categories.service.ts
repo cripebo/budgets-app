@@ -72,7 +72,7 @@ export class ItemCategoriesService {
       .subscribe();
   }
 
-  updateItem(updatedCategory: ItemCategory) {
+  updateCategory(updatedCategory: ItemCategory) {
     const originalCategory = this.state.getById(updatedCategory.id!);
     if (!originalCategory) return;
 
@@ -94,7 +94,7 @@ export class ItemCategoriesService {
       .subscribe();
   }
 
-  deleteItem(id: number): void {
+  deleteCategory(id: number): void {
     const originalCategory = this.state.getById(id);
     if (!originalCategory) return;
 

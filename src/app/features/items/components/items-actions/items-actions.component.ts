@@ -11,7 +11,17 @@ import { ButtonModule } from 'primeng/button';
         icon="pi pi-plus"
         class="mt-1.5"
         aria-label="Crear concepto"
+        styleClass="w-fit sm:w-50"
         (onClick)="onCreate.emit()"
+      />
+      <p-button
+        label="Categorías"
+        icon="pi pi-tag"
+        class="mt-1.5"
+        outlined="true"
+        aria-label="Categorías"
+        styleClass="w-fit sm:w-50"
+        (onClick)="onCreateCategory.emit()"
       />
     </div>
   `,
@@ -19,4 +29,5 @@ import { ButtonModule } from 'primeng/button';
 })
 export class ItemsActionsComponent {
   onCreate = output();
+  onCreateCategory = output();
 }

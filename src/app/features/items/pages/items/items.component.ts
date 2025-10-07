@@ -15,6 +15,7 @@ import { Item } from '@features/items/models/items.model';
 import { ModalHandler } from '@shared/modals/modal-handler';
 import { ItemCategoriesService } from '@features/items/services/item-categories.service';
 import { ItemCategoriesState } from '@features/items/states/item-categories.state';
+import { ItemCategoriesComponent } from '../item-categories/item-categories.component';
 
 @Component({
   selector: 'app-items',
@@ -30,7 +31,10 @@ import { ItemCategoriesState } from '@features/items/states/item-categories.stat
       </div>
       <div class="flex flex-col gap-4 sm:flex-row mt-4">
         <div>
-          <app-items-actions (onCreate)="createItemModal()" />
+          <app-items-actions
+            (onCreate)="createItemModal()"
+            (onCreateCategory)="manageCategoriesModal()"
+          />
         </div>
         <div class="flex-1">
           <app-items-table
@@ -96,6 +100,12 @@ export class ItemsComponent extends ModalHandler implements OnInit {
       onClose: (result: Item) => {
         if (result) this.itemsService.deleteItem(result.id!);
       },
+    });
+  }
+
+  manageCategoriesModal() {
+    this.openModal(ItemCategoriesComponent, {
+      header: 'Categorías',
     });
   }
 }
