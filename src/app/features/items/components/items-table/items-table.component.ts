@@ -59,9 +59,13 @@ import { ItemCategoryBadgeComponent } from '../item-category-badge/item-category
       </ng-template>
       <ng-template #header>
         <tr>
-          <th>Nombre</th>
-          <th>Categoria</th>
-          <th>Precio</th>
+          <th pSortableColumn="name">Nombre<p-sortIcon field="name" /></th>
+          <th pSortableColumn="category_id">
+            Categoria<p-sortIcon field="category_id" />
+          </th>
+          <th pSortableColumn="price" class="text-nowrap">
+            Precio<p-sortIcon field="price" />
+          </th>
           <th></th>
         </tr>
       </ng-template>
@@ -94,6 +98,12 @@ import { ItemCategoryBadgeComponent } from '../item-category-badge/item-category
         </tr>
       </ng-template>
     </p-table>
+  `,
+  styles: `
+    :host ::ng-deep .p-sortable-column-icon {
+      width: 0.7rem;
+      transform: translateY(3px) translateX(3px);
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
