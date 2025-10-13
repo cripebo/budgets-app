@@ -7,11 +7,11 @@ html {
 }
 
 .box-container {
-  @apply p-6 lg:rounded-md bg-white shadow-xs;
+  @apply p-6 sm:rounded-md bg-white shadow-xs;
 }
 
 .box-container-2 {
-  @apply lg:my-2 lg:mx-4 p-6 lg:rounded-md bg-white shadow-xs;
+  @apply lg:my-2 lg:mx-4 p-6 sm:rounded-md bg-white shadow-xs;
 }
 
 /* PrimeNG custom classes */
