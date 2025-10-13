@@ -1,6 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenubarComponent } from '../../shared/components/menubar/menubar.component';
+import { AppInitService } from '@core/services/app-init.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -13,4 +19,10 @@ import { MenubarComponent } from '../../shared/components/menubar/menubar.compon
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent implements OnInit {
+  private readonly appInitService = inject(AppInitService);
+
+  ngOnInit(): void {
+    this.appInitService.loadAll();
+  }
+}

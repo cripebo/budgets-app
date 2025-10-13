@@ -9,10 +9,4 @@ import { ToastModule } from 'primeng/toast';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
-  settingsService = inject(SettingsService);
-
-  ngOnInit(): void {
-    this.settingsService.loadAll();
-  }
-}
+export class AppComponent {}
