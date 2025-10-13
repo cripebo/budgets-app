@@ -19,6 +19,7 @@ import { RegisterRequest } from '../../models/auth.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { SideContentInfoComponent } from '@core/auth/components/side-content-info/side-content-info.component';
 
 @Component({
   selector: 'app-register',
@@ -29,6 +30,7 @@ import { AuthService } from '../../services/auth.service';
     PasswordModule,
     MessageModule,
     RouterLink,
+    SideContentInfoComponent,
   ],
   templateUrl: './register.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

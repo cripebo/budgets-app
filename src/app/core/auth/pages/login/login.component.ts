@@ -20,6 +20,7 @@ import { UserCredentials } from '../../models/auth.model';
 import { catchError, throwError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TokenService } from '../../services/token.service';
+import { SideContentInfoComponent } from '@core/auth/components/side-content-info/side-content-info.component';
 
 @Component({
   imports: [
@@ -29,6 +30,7 @@ import { TokenService } from '../../services/token.service';
     PasswordModule,
     MessageModule,
     RouterLink,
+    SideContentInfoComponent,
   ],
   templateUrl: './login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

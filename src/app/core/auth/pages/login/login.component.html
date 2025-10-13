@@ -1,39 +1,60 @@
-<section class="px-4 lg:px-6 py-4 box-container lg:min-w-3xl md:min-w-xl">
-  <div class="border-bottom-1 surface-border">
-    <h2 class="mt-0 mb-2 text-900 font-bold text-4xl">Iniciar sesión</h2>
-    <p class="mt-0 mb-5 text-700 font-normal text-base">
-      Si no tienes una cuenta puedes registrarte
-      <a
-        class="text-indigo-600 hover:cursor-pointer hover:underline"
-        [routerLink]="['/auth/register']"
-        routerLinkActive="router-link-active"
-        >aqui</a
-      >
-    </p>
-  </div>
-  <form [formGroup]="loginForm" class="flex flex-col gap-4">
-    <div class="flex flex-col gap-2 max-w-[700px]">
-      <label for="username">Username</label>
-      <input id="username" type="text" formControlName="username" pInputText />
+<section
+  class="box-container lg:min-w-3xl md:min-w-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:max-w-5xl gap-6"
+>
+  <div class="col-span-1 md:col-span-2">
+    <div class="border-bottom-1 surface-border">
+      <h2 class="mt-0 mb-8 text-900 font-bold text-4xl">Iniciar sesión</h2>
     </div>
-
-    <div class="flex flex-col gap-2 max-w-[700px]">
-      <label for="password">Contraseña</label>
-      <p-password
-        inputId="password"
-        [fluid]="true"
-        formControlName="password"
-        [toggleMask]="true"
-        [feedback]="false"
-      />
-    </div>
-    @if (errorMessage()) {
+    <form [formGroup]="loginForm" class="flex flex-col gap-4">
       <div class="flex flex-col gap-2 max-w-[700px]">
-        <p-message severity="error">{{ errorMessage() }}</p-message>
+        <label for="username" class="text-black/60 font-semibold"
+          >Usuario</label
+        >
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          id="username-login"
+          pInputText
+        />
       </div>
-    }
-    <div class="flex flex-col gap-2 max-w-[700px]">
-      <p-button label="Entrar" (onClick)="login()" />
-    </div>
-  </form>
+
+      <div class="flex flex-col gap-2 max-w-[700px]">
+        <label for="password" class="text-black/60 font-semibold"
+          >Contraseña</label
+        >
+        <p-password
+          inputId="password"
+          [fluid]="true"
+          formControlName="password"
+          inputId="password-login"
+          [toggleMask]="true"
+          [feedback]="false"
+        />
+      </div>
+      @if (errorMessage()) {
+        <div class="flex flex-col gap-2 max-w-[700px]">
+          <p-message severity="error">{{ errorMessage() }}</p-message>
+        </div>
+      }
+      <div class="flex flex-col gap-2 max-w-[700px]">
+        <p class="mt-0 mb-5 text-700 font-normal text-sm">
+          Si no tienes una cuenta puedes registrarte
+          <a
+            class="text-indigo-600 hover:cursor-pointer hover:underline font-bold"
+            [routerLink]="['/auth/register']"
+            routerLinkActive="router-link-active"
+            >aqui</a
+          >
+        </p>
+        <p-button label="Entrar" (onClick)="login()" />
+      </div>
+    </form>
+  </div>
+  <div
+    class="hidden sm:block rounded-r-md overflow-hidden -mr-5 -my-5 p-4 text-white min-h-[460px]"
+    style="background-image: linear-gradient(135deg, #6366f1 0%, #764ba2 100%)"
+  >
+    <app-side-content-info />
+  </div>
 </section>
