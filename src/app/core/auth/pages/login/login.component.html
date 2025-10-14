@@ -47,7 +47,7 @@
             >aqui</a
           >
         </p>
-        <p-button label="Entrar" (onClick)="login()" />
+        <p-button label="Entrar" [loading]="loading()" (onClick)="login()" />
       </div>
     </form>
   </div>

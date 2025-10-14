@@ -17,7 +17,7 @@ import { PasswordModule } from 'primeng/password';
 import { MessageModule } from 'primeng/message';
 import { RegisterRequest } from '../../models/auth.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, throwError } from 'rxjs';
+import { catchError, finalize, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { SideContentInfoComponent } from '@core/auth/components/side-content-info/side-content-info.component';
 
@@ -43,6 +43,7 @@ export class RegisterComponent {
 
   registerForm: FormGroup;
   errorMessage = signal<string | null>(null);
+  loading = signal(false);
 
   constructor() {
     this.registerForm = this.fb.nonNullable.group({
@@ -68,6 +69,8 @@ export class RegisterComponent {
       return;
     }
 
+    this.loading.set(true);
+
     this.authService
       .register(credentials)
       .pipe(
@@ -79,6 +82,7 @@ export class RegisterComponent {
           }
           return throwError(() => error);
         }),
+        finalize(() => this.loading.set(false)),
       )
       .subscribe((response) => {
         this.router.navigate(['/auth/login']);
