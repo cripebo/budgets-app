@@ -20,9 +20,6 @@ import { PaginatorState } from 'primeng/paginator';
         class="pb-6 flex flex-col sm:flex-row justify-between sm:items-center"
       >
         <h1 class="text-xl font-bold">Actividad reciente</h1>
-        <a>
-          <p-button label="Ver más" size="small" [severity]="'secondary'" />
-        </a>
       </div>
 
       <app-activity-list

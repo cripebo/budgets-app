@@ -50,10 +50,10 @@ import { InputTextModule } from 'primeng/inputtext';
         <p-table [value]="itemsControls()">
           <ng-template #header>
             <tr>
-              <th class="w-full">Nombre</th>
-              <th>Precio</th>
-              <th class="">Cantidad</th>
-              <th>Unidad</th>
+              <th class="w-full text-black/60 font-semibold">Nombre</th>
+              <th class="text-black/60 font-semibold">Precio</th>
+              <th class="text-black/60 font-semibold">Cantidad</th>
+              <th class="text-black/60 font-semibold">Unidad</th>
               <th></th>
             </tr>
           </ng-template>

@@ -23,7 +23,9 @@ import { InputTextModule } from 'primeng/inputtext';
 
         <div class="flex flex-col gap-8">
           <div class="flex flex-col gap-2">
-            <label for="company-name">Nombre*</label>
+            <label for="company-name" class="text-black/60 font-semibold"
+              >Nombre*</label
+            >
             <input
               pInputText
               id="company-name"
@@ -33,7 +35,9 @@ import { InputTextModule } from 'primeng/inputtext';
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div class="flex flex-col gap-2">
-              <label for="company-email">Correo electrónico</label>
+              <label for="company-email" class="text-black/60 font-semibold"
+                >Correo electrónico</label
+              >
               <input
                 pInputText
                 id="company-email"
@@ -42,7 +46,9 @@ import { InputTextModule } from 'primeng/inputtext';
               />
             </div>
             <div class="flex flex-col gap-2">
-              <label for="company-phone">Teléfono</label>
+              <label for="company-phone" class="text-black/60 font-semibold"
+                >Teléfono</label
+              >
               <input
                 pInputText
                 id="company-phone"
@@ -51,7 +57,9 @@ import { InputTextModule } from 'primeng/inputtext';
               />
             </div>
             <div class="flex flex-col gap-2">
-              <label for="company-nif">NIF</label>
+              <label for="company-nif" class="text-black/60 font-semibold"
+                >NIF</label
+              >
               <input
                 pInputText
                 id="company-nif"
@@ -60,7 +68,9 @@ import { InputTextModule } from 'primeng/inputtext';
               />
             </div>
             <div class="flex flex-col gap-2">
-              <label for="company-address">Dirección</label>
+              <label for="company-address" class="text-black/60 font-semibold"
+                >Dirección</label
+              >
               <input
                 pInputText
                 id="company-address"

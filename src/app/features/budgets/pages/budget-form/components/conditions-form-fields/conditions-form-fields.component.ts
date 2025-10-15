@@ -14,7 +14,7 @@ import { CheckboxModule } from 'primeng/checkbox';
   selector: 'app-conditions-form-fields',
   imports: [InputTextModule, CheckboxModule, ReactiveFormsModule],
   template: `
-    <div class="flex flex-col gap-8 pb-8" [formGroup]="parentFormGroup()">
+    <div class="flex flex-col gap-4 pb-8" [formGroup]="parentFormGroup()">
       <label for="client-name" class="font-semibold text-md">Condiciones</label>
       <input
         pInputText

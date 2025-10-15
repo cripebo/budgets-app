@@ -19,14 +19,16 @@ import { InputNumberModule } from 'primeng/inputnumber';
   providers: [DialogService],
   template: `
     <section [formGroup]="parentFormGroup()">
-      <div formGroupName="client" class="flex flex-col gap-4 pb-8">
+      <div formGroupName="client" class="flex flex-col gap-2 pb-8">
         <h3 for="client-name" class="font-semibold text-xl">
           Datos sobre el cliente
         </h3>
 
         <div class="flex flex-col gap-8">
           <div class="flex flex-col gap-2">
-            <label for="client-name">Nombre</label>
+            <label for="client-name" class="text-black/60 font-semibold"
+              >Nombre</label
+            >
             <div class="flex flex-row gap-2">
               <input
                 pInputText
@@ -46,7 +48,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
           </div>
 
           <div class="flex flex-col gap-2">
-            <label for="client-address">Dirección</label>
+            <label for="client-address" class="text-black/60 font-semibold"
+              >Dirección</label
+            >
             <input
               pInputText
               id="client-address"
@@ -57,7 +61,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div class="flex flex-col gap-2">
-              <label for="client-phone">Teléfono</label>
+              <label for="client-phone" class="text-black/60 font-semibold"
+                >Teléfono</label
+              >
               <input
                 pInputText
                 id="client-phone"
@@ -66,7 +72,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
               />
             </div>
             <div class="flex flex-col gap-2">
-              <label for="client-email">Correo eletrónico</label>
+              <label for="client-email" class="text-black/60 font-semibold"
+                >Correo eletrónico</label
+              >
               <input
                 pInputText
                 id="client-email"

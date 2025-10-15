@@ -40,7 +40,7 @@ import { FormsImportsModule } from '@features/budgets/modules/budget-form-import
       <form [formGroup]="budgetForm" class="flex flex-col gap-4">
         <div class="grid grid-cols-1 gap-4 divide-y divide-gray-200">
           <div class="flex flex-col gap-2 pb-8">
-            <label for="client-name" class="font-normal text-md"
+            <label for="client-name" class="text-black/60 font-semibold"
               >Nombre del presupuesto*</label
             >
             <input
@@ -51,8 +51,10 @@ import { FormsImportsModule } from '@features/budgets/modules/budget-form-import
             />
           </div>
 
-          <app-company-form-field [parentFormGroup]="budgetForm" />
-          <app-client-form-fields [parentFormGroup]="budgetForm" />
+          <div class="grid lg:grid-cols-2 gap-12">
+            <app-company-form-field [parentFormGroup]="budgetForm" />
+            <app-client-form-fields [parentFormGroup]="budgetForm" />
+          </div>
           <app-items-form-table [parentFormGroup]="budgetForm" />
           <app-conditions-form-fields [parentFormGroup]="budgetForm" />
           <app-price-form-field [parentFormGroup]="priceForm" />
