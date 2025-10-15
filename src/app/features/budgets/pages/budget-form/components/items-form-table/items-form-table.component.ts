@@ -176,6 +176,7 @@ export class ItemsFormTableComponent extends ModalHandler {
 
   selectItem() {
     this.openModal(ItemsSelectComponent, {
+      header: 'Añadir concepto',
       onClose: (item: Item) => this.addItemToBudget(item),
     });
   }
