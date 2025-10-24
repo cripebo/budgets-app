@@ -16,6 +16,8 @@ import { ModalHandler } from '@shared/modals/modal-handler';
 import { ItemCategoriesService } from '@features/items/services/item-categories.service';
 import { ItemCategoriesState } from '@features/items/states/item-categories.state';
 import { ItemCategoriesComponent } from '../item-categories/item-categories.component';
+import { ExportService } from '@core/export/services/export.service';
+import { ExportFormat } from '@core/export/models/export-format.enum';
 
 @Component({
   selector: 'app-items',
@@ -42,6 +44,7 @@ import { ItemCategoriesComponent } from '../item-categories/item-categories.comp
             [loading]="loading()"
             (onEdit)="editItemModal($event)"
             (onDelete)="deleteItemModal($event)"
+            (onExport)="export()"
           />
         </div>
       </div>
@@ -54,6 +57,7 @@ export class ItemsComponent extends ModalHandler implements OnInit {
   private itemCategoriesService = inject(ItemCategoriesService);
   private itemsState = inject(ItemsState);
   private itemCategoriesState = inject(ItemCategoriesState);
+  private exportService = inject(ExportService);
   protected items = this.itemsState.items;
   protected categories = this.itemCategoriesState.categories;
   protected loading = this.itemsState.loading;
@@ -106,6 +110,17 @@ export class ItemsComponent extends ModalHandler implements OnInit {
   manageCategoriesModal() {
     this.openModal(ItemCategoriesComponent, {
       header: 'Categorías',
+    });
+  }
+
+  export() {
+    this.exportService.export('items', ExportFormat.CSV).subscribe((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'items.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
     });
   }
 }
