@@ -180,7 +180,7 @@ import { finalize } from 'rxjs';
       @if (budget().conditions) {
         <section class="min-h-24">
           <h3 class="border-b border-gray-300 font-semibold mb-2">
-            Comentarios
+            Condiciones
           </h3>
           <p class="text-sm">{{ budget().conditions }}</p>
         </section>
