@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
 import { ClientsService } from '@features/clients/clients.service';
 import { ClientsState } from '@features/clients/clients.state';
@@ -13,6 +14,9 @@ import { Client } from '@features/clients/models/clients.model';
 import { ClientFormComponent } from '../client-form/client-form.component';
 import { DeleteClientFormComponent } from '../delete-client-form/delete-client-form.component';
 import { ModalHandler } from '@shared/modals/modal-handler';
+import { ExportService } from '@core/export/services/export.service';
+import { ExportFormat } from '@core/export/models/export-format.enum';
+import { downloadBlob } from '@shared/utils/file-downloader';
 
 @Component({
   selector: 'app-clients',
@@ -35,8 +39,10 @@ import { ModalHandler } from '@shared/modals/modal-handler';
           <app-clients-table
             [clients]="clients()"
             [loading]="loading()"
+            [exporting]="exporting()"
             (onEdit)="editClientModal($event)"
             (onDelete)="deleteClientModal($event)"
+            (onExport)="export()"
           />
         </div>
       </div>
@@ -47,8 +53,10 @@ import { ModalHandler } from '@shared/modals/modal-handler';
 export class ClientsComponent extends ModalHandler implements OnInit {
   private clientService = inject(ClientsService);
   private clientsState = inject(ClientsState);
+  private exportService = inject(ExportService);
   protected clients = this.clientsState.clients;
   protected loading = this.clientsState.loading;
+  protected exporting = signal(false);
 
   constructor(dialogService: DialogService) {
     super(dialogService);
@@ -89,6 +97,17 @@ export class ClientsComponent extends ModalHandler implements OnInit {
       onClose: (result: Client) => {
         if (result) this.clientService.deleteClient(result.id!);
       },
+    });
+  }
+
+  export() {
+    const entity = 'clients';
+    this.exporting.set(true);
+
+    this.exportService.export(entity, ExportFormat.CSV).subscribe({
+      next: (blob) => downloadBlob(blob, `${entity}.csv`),
+      error: (err) => console.error('Error exportando', err),
+      complete: () => this.exporting.set(false),
     });
   }
 }

@@ -12,6 +12,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { ClientsTableActionsComponent } from './components/clients-table-actions/clients-table-actions.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-clients-table',
@@ -22,6 +23,7 @@ import { ClientsTableActionsComponent } from './components/clients-table-actions
     InputIconModule,
     ClientsTableActionsComponent,
     EmptyFallbackPipe,
+    ButtonModule,
   ],
   template: `
     <p-table
@@ -36,7 +38,7 @@ import { ClientsTableActionsComponent } from './components/clients-table-actions
       [rows]="5"
     >
       <ng-template #caption>
-        <div class="flex -mx-2">
+        <div class="flex -mx-2 justify-between items-center">
           <p-iconfield iconPosition="left" class="w-full sm:w-[300px]">
             <p-inputicon>
               <i class="pi pi-search"></i>
@@ -50,6 +52,17 @@ import { ClientsTableActionsComponent } from './components/clients-table-actions
               placeholder="Buscar"
             />
           </p-iconfield>
+          <div class="flex justify-center">
+            <p-button
+              (click)="onExport.emit()"
+              rounded="true"
+              title="Exportar CSV"
+              ariaLabel="Exportar CSV"
+              severity="secondary"
+              icon="pi pi-file-export"
+              [loading]="exporting()"
+            />
+          </div>
         </div>
       </ng-template>
       <ng-template #header>
@@ -95,10 +108,12 @@ import { ClientsTableActionsComponent } from './components/clients-table-actions
 export class ClientsTableComponent {
   clients = input.required<Client[]>();
   loading = input<boolean>(false);
+  exporting = input<boolean>(false);
   table = viewChild<Table>('clientsTable');
 
   onEdit = output<number>();
   onDelete = output<number>();
+  onExport = output();
 
   onFilter(event: Event) {
     const input = event.target as HTMLInputElement;

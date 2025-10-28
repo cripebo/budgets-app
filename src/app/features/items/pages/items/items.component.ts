@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
 import { ItemsTableComponent } from '@features/items/components/items-table/items-table.component';
 import { ItemsActionsComponent } from '@features/items/components/items-actions/items-actions.component';
@@ -18,6 +19,7 @@ import { ItemCategoriesState } from '@features/items/states/item-categories.stat
 import { ItemCategoriesComponent } from '../item-categories/item-categories.component';
 import { ExportService } from '@core/export/services/export.service';
 import { ExportFormat } from '@core/export/models/export-format.enum';
+import { downloadBlob } from '@shared/utils/file-downloader';
 
 @Component({
   selector: 'app-items',
@@ -42,6 +44,7 @@ import { ExportFormat } from '@core/export/models/export-format.enum';
           <app-items-table
             [items]="items()"
             [loading]="loading()"
+            [exporting]="exporting()"
             (onEdit)="editItemModal($event)"
             (onDelete)="deleteItemModal($event)"
             (onExport)="export()"
@@ -61,6 +64,7 @@ export class ItemsComponent extends ModalHandler implements OnInit {
   protected items = this.itemsState.items;
   protected categories = this.itemCategoriesState.categories;
   protected loading = this.itemsState.loading;
+  protected exporting = signal(false);
 
   constructor(dialogService: DialogService) {
     super(dialogService);
@@ -114,13 +118,13 @@ export class ItemsComponent extends ModalHandler implements OnInit {
   }
 
   export() {
-    this.exportService.export('items', ExportFormat.CSV).subscribe((blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'items.csv';
-      a.click();
-      window.URL.revokeObjectURL(url);
+    const entity = 'items';
+    this.exporting.set(true);
+
+    this.exportService.export(entity, ExportFormat.CSV).subscribe({
+      next: (blob) => downloadBlob(blob, `${entity}.csv`),
+      error: (err) => console.error('Error exportando', err),
+      complete: () => this.exporting.set(false),
     });
   }
 }

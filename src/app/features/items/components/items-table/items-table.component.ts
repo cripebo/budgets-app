@@ -65,6 +65,7 @@ import { ButtonModule } from 'primeng/button';
               ariaLabel="Exportar CSV"
               severity="secondary"
               icon="pi pi-file-export"
+              [loading]="exporting()"
             />
           </div>
         </div>
@@ -125,6 +126,7 @@ export class ItemsTableComponent {
 
   items = input<Item[]>([]);
   loading = input(false);
+  exporting = input(false);
   itemsPerRow = input(this.DEFAUL_ITEMS_PER_ROW);
   itemsPerRowOptions = input(this.DEFAUL_ROWS_PER_PAGE_OPTIONS);
   table = viewChild<Table>('itemsTable');
