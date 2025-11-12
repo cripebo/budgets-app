@@ -1,5 +1,6 @@
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 import { provideBudgetsState } from '@features/budgets/budgets.state';
+import { provideBudgetTemplatesState } from '@features/budgets/states/budget-templates.state';
 import { provideClientsState } from '@features/clients/clients.state';
 import { provideItemCategoriesState } from '@features/items/states/item-categories.state';
 import { provideItemsState } from '@features/items/states/items.state';
@@ -14,5 +15,6 @@ export function provideAppStates(): EnvironmentProviders {
     provideItemCategoriesState,
     provideSettingsState,
     provideStatesState,
+    provideBudgetTemplatesState,
   ]);
 }

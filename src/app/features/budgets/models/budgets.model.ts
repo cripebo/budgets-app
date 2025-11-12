@@ -49,3 +49,8 @@ export interface BudgetPrice {
   iva: number;
   total: number;
 }
+
+export interface BudgetTemplate {
+  id: number;
+  name: string;
+}
