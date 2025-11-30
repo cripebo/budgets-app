@@ -60,7 +60,8 @@ export class BudgetTemplatesService {
           ),
         ),
         take(1),
-      );
+      )
+      .subscribe();
   }
 
   updateTemplate(id: string, data: Partial<BudgetTemplate>): void {
